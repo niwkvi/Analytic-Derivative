@@ -1,5 +1,8 @@
-from math import *
+# from math import *
+from splitFuncs import *
 
+f = open("input.txt")
 
-function = [input().replace(' ', '')]
+function = f.readline().replace(' ', '')
 
+print(split(function))
