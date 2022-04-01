@@ -1,8 +1,9 @@
 # from math import *
 from splitFuncs import *
+from tokens import *
 
 f = open("input.txt")
 
-function = f.readline().replace(' ', '')
+function = stringToTokens(f.readline().replace(' ', ''))
 
-print(split(function))
+print(tokenListToTree(function))

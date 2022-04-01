@@ -1,56 +1,44 @@
-def braceStrip(expression: str):
-    expressionLocal = expression
+def braceStrip(tokenList: list):
+    tempTokenList = tokenList[:]
     while True:
-        if expressionLocal[0] == '(' and expressionLocal[-1] == ')':
-            expressionLocal = expressionLocal.lstrip('(')
-            expressionLocal = expressionLocal.rstrip(')')
+        if tempTokenList[0][0] == '(' and tempTokenList[-1][0] == ')':
+            tempTokenList = tempTokenList[1:-1]
         else:
-            return expressionLocal
+            return tempTokenList
 
 
-def splitPlusMinus(expression: str):
+def splitBinaryOperation(tokenList: list, priority: int) -> (list, bool):
     braceCounter = 0
-    for i in range(len(expression)):
-        match expression[i]:
-            case '(':
-                braceCounter += 1
-            case ')':
-                braceCounter -= 1
-            case ('+'|'-'):
-                if braceCounter == 0:
-                    left = braceStrip(expression[:i])
-                    right = braceStrip(expression[i + 1:])
-                    return [left, expression[i], right]
-    return expression
+    for i in range(len(tokenList)):
+        if tokenList[i][0] == '(':
+            braceCounter += 1
+        elif tokenList[i][0] == ')':
+            braceCounter -= 1
+        elif tokenList[i][0] == 'binary' + str(priority):
+            if braceCounter == 0:
+                left = braceStrip(tokenList[:i])
+                right = braceStrip(tokenList[i + 1:])
+                return [left, tokenList[i], right], True
+    return tokenList, False
 
 
-def splitMulDiv(expression: str):
-    braceCounter = 0
-    for i in range(len(expression)):
-        match expression[i]:
-            case '(':
-                braceCounter += 1
-            case ')':
-                braceCounter -= 1
-            case ('*' | '/'):
-                if braceCounter == 0:
-                    left = braceStrip(expression[:i])
-                    right = braceStrip(expression[i + 1:])
-                    return [left, expression[i], right]
-    return expression
-
-
-def split(expression: str):
-    result = splitPlusMinus(expression)
-    if type(result) == list:
-        result[0] = split(result[0])
-        result[-1] = split(result[-1])
+def tokenListToTree(tokenList: list) -> list:
+    result, isSplit = splitBinaryOperation(tokenList, 1)
+    if isSplit:
+        result[0] = tokenListToTree(result[0])
+        result[-1] = tokenListToTree(result[-1])
         return result
 
-    result = splitMulDiv(expression)
-    if type(result) == list:
-        result[0] = split(result[0])
-        result[-1] = split(result[-1])
+    result, isSplit = splitBinaryOperation(tokenList, 2)
+    if isSplit:
+        result[0] = tokenListToTree(result[0])
+        result[-1] = tokenListToTree(result[-1])
+        return result
+
+    result, isSplit = splitBinaryOperation(tokenList, 3)
+    if isSplit:
+        result[0] = tokenListToTree(result[0])
+        result[-1] = tokenListToTree(result[-1])
         return result
 
     return result
