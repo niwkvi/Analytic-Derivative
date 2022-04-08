@@ -1,8 +1,8 @@
-functionDict = {'sin', 'cos', 'tan', 'cot', 'sec', 'csc',
+functionDict = ['sin', 'cos', 'tan', 'cot', 'sec', 'csc',
                 'sinh', 'cosh', 'tanh', 'coth', 'sech', 'csch',
                 'asin', 'acos', 'atan', 'acot', 'asec', 'acsc',
                 'asinh', 'acosh', 'atanh', 'acoth', 'asech', 'acsch',
-                'ln', 'log', 'exp', 'sqrt'}
+                'ln', 'log', 'exp', 'sqrt']
 
 
 def stringToTokens(expression: str) -> list | None:
@@ -29,7 +29,7 @@ def stringToTokens(expression: str) -> list | None:
          if word in ['e', 'pi']:
             tokenList.append(('constant', word))
          elif len(word) == 1:
-            tokenList.append(('parameter', word))
+            tokenList.append(('variable', word))
          elif word in functionDict:
             tokenList.append(('function', word))
          else:
