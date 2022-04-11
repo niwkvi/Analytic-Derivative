@@ -11,3 +11,5 @@ function = stringToTokens(f.readline().replace(' ', ''))
 tree = tokenListToTree(function)
 
 derivative = findDerivative(tree, 'x')
+
+print(tokensToString(derivative))
