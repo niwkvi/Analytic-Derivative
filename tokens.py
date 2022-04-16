@@ -60,6 +60,4 @@ def tokensToString(tokenList: list) -> str:
             string[i] = string[i][1]
         else:
             string[i] = string[i][0]
-    if string[0] == '(' and string[-1] == ')':
-        string = string[1:-1]
     return ''.join(string)

@@ -1,1 +1,2 @@
-sin(cos(x^2))
+x
+sin(x)
